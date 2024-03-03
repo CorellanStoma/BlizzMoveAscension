@@ -187,6 +187,7 @@ local function OnEvent(self, event, arg1, arg2)
 		frame:RegisterEvent("ADDON_LOADED") --for blizz lod addons
 		db = BlizzMoveAscensionDB or defaultDB
 		BlizzMoveAscensionDB = db
+		SetMoveHandler(AudioOptionsFrame)
 		SetMoveHandler(ContainerFrame1)
 		SetMoveHandler(ContainerFrame2)
 		SetMoveHandler(ContainerFrame3)
