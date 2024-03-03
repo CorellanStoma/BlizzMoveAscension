@@ -1,5 +1,4 @@
-﻿-- BlizzMmove, move the blizzard frames by yess
-db = nil
+﻿db = nil
 local frame = CreateFrame("Frame")
 local optionPanel = nil
 
@@ -19,17 +18,6 @@ local function Print(...)
 	DEFAULT_CHAT_FRAME:AddMessage(s)
 end
 
---[===[@debug@
-local function Debug(...)
-	local s = "Blizzmove Debug:"
-	for i=1,select("#", ...) do
-		local x = select(i, ...)
-		s = strjoin(" ",s,tostring(x))
-	end
-	DEFAULT_CHAT_FRAME:AddMessage(s)
-end
---@end-debug@]===]
-
 local function OnShow(self, ...)
 	local settings = self.settings
 	if settings and settings.point and settings.save then
@@ -41,7 +29,6 @@ local function OnShow(self, ...)
 		end
 	end
 end
-
 
 local function OnMouseWheel(self, value, ...)
 	if IsControlKeyDown() then
@@ -62,14 +49,13 @@ local function OnMouseWheel(self, value, ...)
 		if self.settings then
 			self.settings.scale = scale
 		end
-		--Debug("scroll", arg1, scale, frameToMove:GetScale())
 	end
 end
 
 local function OnDragStart(self)
 	local frameToMove = self.frameToMove
 	local settings = frameToMove.settings
-	if settings and not settings.default then -- set defaults 
+	if settings and not settings.default then
 		settings.default = {}
 		local def = settings.default
 		def.point, def.relativeTo , def.relativePoint, def.xOfs, def.yOfs = frameToMove:GetPoint()
@@ -136,20 +122,20 @@ local function SetMoveHandler(frameToMove, handler)
 	if not frameToMove.EnableMouse then return end
 	
 	frameToMove:EnableMouse(true)
-	frameToMove:SetMovable(true) 
+	frameToMove:SetMovable(true)
 	handler:RegisterForDrag("LeftButton");
 	
 	handler:SetScript("OnDragStart", OnDragStart)
 	handler:SetScript("OnDragStop", OnDragStop)
 
 	--override frame position according to settings when shown
-	frameToMove:HookScript("OnShow", OnShow)			
+	frameToMove:HookScript("OnShow", OnShow)
 	
 	--hook OnMouseUp 
 	handler:HookScript("OnMouseUp", OnMouseUp)
 	
 	--hook Scroll for setting scale
-	handler:EnableMouseWheel(true) 
+	handler:EnableMouseWheel(true)
 	handler:HookScript("OnMouseWheel",OnMouseWheel)
 end
 
@@ -201,7 +187,9 @@ local function OnEvent(self, event, arg1, arg2)
 		frame:RegisterEvent("ADDON_LOADED") --for blizz lod addons
 		db = BlizzMoveAscensionDB or defaultDB
 		BlizzMoveAscensionDB = db
-		--SetMoveHandler(frameToMove, handlerFrame)
+		SetMoveHandler(AscensionLFGFrame)
+		SetMoveHandler(QuestLogDetailFrame)
+		SetMoveHandler(AscensionSpellbookFrame)
 		SetMoveHandler(AscensionCharacterFrame,AscensionPaperDollFrame)
 		SetMoveHandler(AscensionCharacterFrame,TokenFrame)
 		SetMoveHandler(AscensionCharacterFrame,SkillFrame)
@@ -211,14 +199,6 @@ local function OnEvent(self, event, arg1, arg2)
 		SetMoveHandler(QuestLogFrame)
 		SetMoveHandler(FriendsFrame)
 		SetMoveHandler(WorldMapFrame,WorldMapTitleButton)
-		
-		if PVPParentFrame then
-			SetMoveHandler(PVPParentFrame,PVPFrame)
-		else
-			SetMoveHandler(PVPFrame)
-		end
-		
-		--SetMoveHandler(WatchFrame,WatchFrameHeader)
 		SetMoveHandler(LFGParentFrame)
 		SetMoveHandler(GameMenuFrame)
 		SetMoveHandler(GossipFrame)
@@ -236,7 +216,13 @@ local function OnEvent(self, event, arg1, arg2)
 		SetMoveHandler(LFDParentFrame)
 		SetMoveHandler(LFRParentFrame)
 		SetMoveHandler(TradeFrame)
-		
+
+		if PVPParentFrame then
+			SetMoveHandler(PVPParentFrame,PVPFrame)
+		else
+			SetMoveHandler(PVPFrame)
+		end
+
 		if RaidParentFrame then SetMoveHandler(RaidParentFrame) end
 		
 		InterfaceOptionsFrame:HookScript("OnShow", function() 
@@ -291,7 +277,6 @@ end
 
 frame:SetScript("OnEvent", OnEvent)
 frame:RegisterEvent("PLAYER_ENTERING_WORLD")
-
 
 ----------------------------------------------------------
 -- User function to move/lock a frame with a handler
