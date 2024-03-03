@@ -2,8 +2,8 @@
 ## Title: BlizzMoveAscension
 ## Notes: Makes blizzard frames movable
 ## Author: Kiatra, Corellan
-## Version: v1.2.4
-## X-Curse-Packaged-Version: v1.2.4
+## Version: v1.0.1
+## X-Curse-Packaged-Version: v1.0.1
 ## X-Curse-Project-Name: BlizzMoveAscension
 ## X-Curse-Project-ID: blizzmoveascension
 ## X-Curse-Repository-ID: wow/blizzmove/mainline
