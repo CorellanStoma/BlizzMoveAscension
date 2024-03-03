@@ -1,13 +1,23 @@
-﻿db = nil
+﻿-- ╔══════════════════════════╦═════════════════════════════════════════════════════════════════════════════[─]═[□]═[×]═╗
+-- ║ General                  ║ Database                                                                                ║
+-- ╚══════════════════════════╩═════════════════════════════════════════════════════════════════════════════════════════╝
+
+-- Database
+db = nil
 local frame = CreateFrame("Frame")
 local optionPanel = nil
 
+-- Database Config
 local defaultDB = { 
 	AchievementFrame = {save = true},
 	CalendarFrame = {save = true},
 	AuctionFrame = {save = true},
 	GuildBankFrame = {save = true},
 }
+
+-- ╔══════════════════════════╦═════════════════════════════════════════════════════════════════════════════[─]═[□]═[×]═╗
+-- ║ General                  ║ Message Output                                                                          ║
+-- ╚══════════════════════════╩═════════════════════════════════════════════════════════════════════════════════════════╝
 
 local function Print(...)
 	local s = "BlizzMove:"
@@ -17,6 +27,10 @@ local function Print(...)
 	end
 	DEFAULT_CHAT_FRAME:AddMessage(s)
 end
+
+-- ╔══════════════════════════╦═════════════════════════════════════════════════════════════════════════════[─]═[□]═[×]═╗
+-- ║ General                  ║ Window Positioning                                                                      ║
+-- ╚══════════════════════════╩═════════════════════════════════════════════════════════════════════════════════════════╝
 
 local function OnShow(self, ...)
 	local settings = self.settings
@@ -29,6 +43,10 @@ local function OnShow(self, ...)
 		end
 	end
 end
+
+-- ╔══════════════════════════╦═════════════════════════════════════════════════════════════════════════════[─]═[□]═[×]═╗
+-- ║ General                  ║ Scaling Function                                                                      ║
+-- ╚══════════════════════════╩═════════════════════════════════════════════════════════════════════════════════════════╝
 
 local function OnMouseWheel(self, value, ...)
 	if IsControlKeyDown() then
@@ -52,6 +70,11 @@ local function OnMouseWheel(self, value, ...)
 	end
 end
 
+-- ╔══════════════════════════╦═════════════════════════════════════════════════════════════════════════════[─]═[□]═[×]═╗
+-- ║ General                  ║ Drag Function                                                                           ║
+-- ╚══════════════════════════╩═════════════════════════════════════════════════════════════════════════════════════════╝
+
+-- Start
 local function OnDragStart(self)
 	local frameToMove = self.frameToMove
 	local settings = frameToMove.settings
@@ -67,6 +90,7 @@ local function OnDragStart(self)
 	frameToMove.isMoving = true
 end
 
+-- Stop
 local function OnDragStop(self)
 	local frameToMove = self.frameToMove
 	local settings = frameToMove.settings
@@ -76,6 +100,10 @@ local function OnDragStop(self)
 			settings.point, settings.relativeTo, settings.relativePoint, settings.xOfs, settings.yOfs = frameToMove:GetPoint()
 	end
 end
+
+-- ╔══════════════════════════╦═════════════════════════════════════════════════════════════════════════════[─]═[□]═[×]═╗
+-- ║ General                  ║ Click Release                                                                           ║
+-- ╚══════════════════════════╩═════════════════════════════════════════════════════════════════════════════════════════╝
 
 local function OnMouseUp(self, ...)
 	local frameToMove = self.frameToMove
@@ -102,6 +130,10 @@ local function OnMouseUp(self, ...)
 		end
 	end
 end
+
+-- ╔══════════════════════════╦═════════════════════════════════════════════════════════════════════════════[─]═[□]═[×]═╗
+-- ║ General                  ║ Frame Movement                                                                          ║
+-- ╚══════════════════════════╩═════════════════════════════════════════════════════════════════════════════════════════╝
 
 local function SetMoveHandler(frameToMove, handler)
 	if not frameToMove then
@@ -139,6 +171,10 @@ local function SetMoveHandler(frameToMove, handler)
 	handler:HookScript("OnMouseWheel",OnMouseWheel)
 end
 
+-- ╔══════════════════════════╦═════════════════════════════════════════════════════════════════════════════[─]═[□]═[×]═╗
+-- ║ General                  ║ Database Reset Function                                                                 ║
+-- ╚══════════════════════════╩═════════════════════════════════════════════════════════════════════════════════════════╝
+
 local function resetDB()
 	for k, v in pairs(db) do
 		local f = _G[k]
@@ -152,6 +188,10 @@ local function resetDB()
 		end
 	end
 end
+
+-- ╔══════════════════════════╦═════════════════════════════════════════════════════════════════════════════[─]═[□]═[×]═╗
+-- ║ General                  ║ Options Panel                                                                           ║
+-- ╚══════════════════════════╩═════════════════════════════════════════════════════════════════════════════════════════╝
 
 local function createOptionPanel()
 	optionPanel = CreateFrame( "Frame", "BlizzMovePanel", UIParent );
@@ -181,8 +221,11 @@ local function createOptionPanel()
 	InterfaceOptions_AddCategory(optionPanel);
 end
 
+-- ╔══════════════════════════╦═════════════════════════════════════════════════════════════════════════════[─]═[□]═[×]═╗
+-- ║ General                  ║ Frame Setup                                                                             ║
+-- ╚══════════════════════════╩═════════════════════════════════════════════════════════════════════════════════════════╝
+
 local function OnEvent(self, event, arg1, arg2)
-	--Debug(event, arg1, arg2)
 	if event == "PLAYER_ENTERING_WORLD" then
 		frame:RegisterEvent("ADDON_LOADED") --for blizz lod addons
 		db = BlizzMoveAscensionDB or defaultDB
@@ -238,7 +281,6 @@ local function OnEvent(self, event, arg1, arg2)
 			end
 		end)
 		frame:UnregisterEvent("PLAYER_ENTERING_WORLD")
-	-- blizzard lod addons
 	elseif arg1 == "Blizzard_InspectUI" then
 		SetMoveHandler(InspectFrame)
 	elseif arg1 == "Blizzard_GuildBankUI" then
@@ -285,12 +327,10 @@ end
 frame:SetScript("OnEvent", OnEvent)
 frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 
-----------------------------------------------------------
--- User function to move/lock a frame with a handler
--- handler, the frame the user has clicked on
--- frameToMove, the handler itself, a parent frame of handler 
---              that has UIParent as Parent or nil  
-----------------------------------------------------------
+-- ╔══════════════════════════╦═════════════════════════════════════════════════════════════════════════════[─]═[□]═[×]═╗
+-- ║ General                  ║ Toggle Funktion                                                                         ║
+-- ╚══════════════════════════╩═════════════════════════════════════════════════════════════════════════════════════════╝
+
 BlizzMove = {}
 function BlizzMove:Toggle(handler)
 	if not handler then
@@ -304,9 +344,8 @@ function BlizzMove:Toggle(handler)
 	local lastParent = handler
 	local frameToMove = handler
 	local i=0
-	--get the parent attached to UIParent from handler
 	while lastParent and lastParent ~= UIParent and i < 100 do
-			frameToMove = lastParent --set to last parent
+			frameToMove = lastParent
 			lastParent = lastParent:GetParent()
 			i = i +1
 	end
@@ -322,7 +361,6 @@ function BlizzMove:Toggle(handler)
 	else
 		Print("Error parent not found.")
 	end
-	
 end
 
 BINDING_HEADER_BLIZZMOVE = "BlizzMove";
