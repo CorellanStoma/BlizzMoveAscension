@@ -1,5 +1,5 @@
 # BlizzMoveAscension
-This is a fork is based on BlizzMove v1.2.4 (Retail v4.3.0) that was created by [https://github.com/Kiatra](Kiatra).
+This is a fork is based on BlizzMove v1.2.4 (Retail v4.3.0) that was created by [Kiatra](https://github.com/Kiatra).
 
 World of Warcraft add-on to make the default windows movable via drag & drop.
 This addon has been slightly adapted and modified to run with World of Warcraft: Ascension.
